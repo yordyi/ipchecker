@@ -64,7 +64,7 @@ export default function ModernNetworkDetection() {
         audio: browserFingerprint?.audioFingerprint,
       }
     };
-  }, [deviceInfo, enhancedFingerprint.data.clientData]);
+  }, [deviceInfo, enhancedFingerprint.data.clientData, browserFingerprint]);
 
   const transformToConnectionInfo = useCallback(() => {
     if (!enhancedFingerprint.data.clientData?.result || !webrtcInfo) return null;
@@ -131,6 +131,7 @@ export default function ModernNetworkDetection() {
       publicIp: String(getNestedValue(result, 'ip') || '') || undefined,
       localIp: webrtcInfo.localIPs?.[0] || undefined,
       qualityScore: networkQuality.score || 0,
+      quality: networkQuality, // 添加 quality 对象
     };
   }, [enhancedFingerprint.data, webrtcInfo]);
 
@@ -393,7 +394,7 @@ export default function ModernNetworkDetection() {
                   <div className="stat-label">访问次数</div>
                 </div>
                 <div className="glass-effect rounded-xl p-4">
-                  <div className="stat-value">{connectionInfo?.quality.level === 'excellent' ? '极佳' : connectionInfo?.quality.level === 'good' ? '良好' : connectionInfo?.quality.level === 'fair' ? '一般' : '未知'}</div>
+                  <div className="stat-value">{connectionInfo?.quality?.level === 'excellent' ? '极佳' : connectionInfo?.quality?.level === 'good' ? '良好' : connectionInfo?.quality?.level === 'fair' ? '一般' : '未知'}</div>
                   <div className="stat-label">网络质量</div>
                 </div>
               </div>
@@ -510,7 +511,16 @@ export default function ModernNetworkDetection() {
       {/* 指纹详情区域 - 新增 */}
       <div className="max-w-4xl mx-auto px-6 mb-8">
         <FingerprintDetails
-          fingerprint={browserFingerprint}
+          fingerprint={browserFingerprint ? {
+            canvasFingerprint: browserFingerprint.canvasFingerprint,
+            webglFingerprint: browserFingerprint.webglFingerprint,
+            audioFingerprint: browserFingerprint.audioFingerprint,
+            webglVendor: browserFingerprint.webglVendor,
+            webglRenderer: browserFingerprint.webglRenderer,
+            webglExtensions: browserFingerprint.webglExtensions,
+            plugins: browserFingerprint.plugins?.map(p => ({ name: p })),
+            fonts: browserFingerprint.availableFonts,
+          } : null}
           isLoading={!browserFingerprint}
         />
       </div>

@@ -17,10 +17,23 @@ import {
   Eye,
   EyeOff
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-
 interface FingerprintDetailsProps {
-  fingerprint: any;
+  fingerprint: {
+    canvasFingerprint?: string;
+    webglFingerprint?: string;
+    audioFingerprint?: string;
+    webglVendor?: string;
+    webglRenderer?: string;
+    webglExtensions?: string[];
+    plugins?: Array<{ name: string; version?: string }>;
+    fonts?: string[];
+    mediaDevices?: {
+      audioInput: number;
+      audioOutput: number;
+      videoInput: number;
+    };
+    permissions?: Record<string, PermissionState>;
+  } | null;
   isLoading?: boolean;
 }
 
@@ -220,19 +233,19 @@ export function FingerprintDetails({ fingerprint, isLoading }: FingerprintDetail
             <div className="flex items-center gap-3">
               <Globe className="h-4 w-4 text-indigo-400" />
               <span className="font-medium">可用字体</span>
-              {fingerprint?.availableFonts && (
+              {fingerprint?.fonts && (
                 <span className="text-xs bg-white/10 px-2 py-0.5 rounded">
-                  {fingerprint.availableFonts.length} 种
+                  {fingerprint.fonts.length} 种
                 </span>
               )}
             </div>
             {expandedSections.fonts ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </button>
           
-          {expandedSections.fonts && fingerprint?.availableFonts && (
+          {expandedSections.fonts && fingerprint?.fonts && (
             <div className="p-4 pt-0">
               <div className="flex flex-wrap gap-1 max-h-32 overflow-y-auto">
-                {fingerprint.availableFonts.map((font: string, idx: number) => (
+                {fingerprint.fonts.map((font, idx) => (
                   <span key={idx} className="text-xs bg-white/5 px-2 py-1 rounded">
                     {font}
                   </span>
@@ -264,9 +277,9 @@ export function FingerprintDetails({ fingerprint, isLoading }: FingerprintDetail
             <div className="p-4 pt-0">
               {fingerprint.plugins.length > 0 ? (
                 <div className="space-y-1">
-                  {fingerprint.plugins.map((plugin: string, idx: number) => (
+                  {fingerprint.plugins.map((plugin, idx) => (
                     <div key={idx} className="text-sm text-gray-300">
-                      • {plugin}
+                      • {plugin.name}{plugin.version ? ` (${plugin.version})` : ''}
                     </div>
                   ))}
                 </div>

@@ -9,7 +9,7 @@ interface ModernCardProps {
   children: ReactNode;
   className?: string;
   gradient?: boolean;
-  glowColor?: string;
+  glowColor?: "blue" | "purple" | "green" | "red" | "yellow";
 }
 
 export function ModernCard({ 
@@ -39,13 +39,13 @@ export function ModernCard({
         className
       )}
       style={{
-        boxShadow: `0 20px 40px -12px rgba(0, 0, 0, 0.25), 0 0 40px -8px ${glowColors[glowColor] || glowColors.blue}`
+        boxShadow: `0 20px 40px -12px rgba(0, 0, 0, 0.25), 0 0 40px -8px ${glowColors[glowColor || "blue"]}`
       }}
     >
       {/* 悬浮时的光效 */}
       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
         style={{
-          background: `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${glowColors[glowColor] || glowColors.blue}, transparent 40%)`
+          background: `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${glowColors[glowColor || "blue"]}, transparent 40%)`
         }}
       />
       

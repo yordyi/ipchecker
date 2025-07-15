@@ -1,22 +1,44 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* 现代化UI样式 */
 @layer base {
   body {
     @apply bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20 dark:from-black dark:via-blue-950/30 dark:to-purple-950/30;
-    @apply min-h-screen;
+    @apply min-h-screen text-white;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
+  * {
+    @apply border-gray-800;
   }
 }
 
+/* 毛玻璃效果 */
 @layer components {
-  /* 毛玻璃效果 */
   .glass-effect {
     @apply backdrop-blur-xl bg-white/5 dark:bg-white/10;
     @apply border border-white/10 dark:border-white/20;
     @apply shadow-2xl;
+  }
+
+  /* 图标包装器 */
+  .icon-wrapper {
+    @apply p-3 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20;
+    @apply border border-blue-500/30;
+  }
+
+  /* 统计值样式 */
+  .stat-value {
+    @apply text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent;
+  }
+
+  .stat-label {
+    @apply text-sm text-gray-400 mt-1;
   }
 
   /* 渐变边框效果 */
@@ -26,7 +48,7 @@
     border: 1px solid transparent;
     background-clip: padding-box;
   }
-  
+
   .gradient-border::before {
     content: '';
     position: absolute;
@@ -52,11 +74,6 @@
     @apply animate-pulse bg-gradient-to-r from-transparent via-white/20 to-transparent;
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
-  }
-
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
   }
 
   /* 按钮样式 */
@@ -98,198 +115,72 @@
   .tag-info {
     @apply text-blue-400 bg-blue-400/10 border-blue-400/30;
   }
-}
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-}
-
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.21 0.006 285.885);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.705 0.015 286.067);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-primary: oklch(0.21 0.006 285.885);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.705 0.015 286.067);
-}
-
-.dark {
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.92 0.004 286.32);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.552 0.016 285.938);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.552 0.016 285.938);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
+  /* 响应式网格布局 */
+  .grid-responsive {
+    @apply grid gap-6;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
 
-/* 专业浏览器指纹检测系统样式 */
-@layer components {
-  /* 专业容器样式 */
+  /* 现代化输入框 */
+  .input-modern {
+    @apply w-full px-4 py-3 rounded-lg;
+    @apply glass-effect;
+    @apply text-white placeholder:text-gray-400;
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500/50;
+    @apply transition-all duration-200;
+  }
+
+  /* 现代化选择框 */
+  .select-modern {
+    @apply w-full px-4 py-3 rounded-lg;
+    @apply glass-effect;
+    @apply text-white;
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500/50;
+    @apply transition-all duration-200;
+  }
+
+  /* 现代化卡片样式 */
+  .modern-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+    @apply rounded-xl p-6 shadow-2xl;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:bg-white/10 hover:border-white/20;
+    @apply hover:transform hover:-translate-y-1 hover:shadow-3xl;
+  }
+
+  /* 专业卡片样式 */
+  .professional-card {
+    @apply bg-gradient-to-br from-white/5 to-white/10;
+    @apply backdrop-blur-xl border border-white/20;
+    @apply rounded-2xl p-8 shadow-2xl;
+    @apply transition-all duration-300;
+    @apply hover:from-white/10 hover:to-white/15;
+    @apply hover:border-white/30 hover:shadow-3xl;
+    @apply hover:transform hover:-translate-y-2;
+  }
+
+  /* 专业容器 */
   .professional-container {
-    min-height: 100vh;
-    color: #ffffff;
-    position: relative;
-    overflow-x: hidden;
+    @apply min-h-screen text-white relative overflow-x-hidden;
   }
-  
-  /* 动态背景效果 */
+
   .professional-container::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: 
+    background:
       radial-gradient(ellipse at top left, rgba(59, 130, 246, 0.15), transparent 40%),
       radial-gradient(ellipse at bottom right, rgba(147, 51, 234, 0.15), transparent 40%),
       radial-gradient(ellipse at center, rgba(6, 182, 212, 0.08), transparent 60%);
     animation: backgroundShift 20s ease-in-out infinite;
     z-index: -1;
   }
-  
-  @keyframes backgroundShift {
-    0%, 100% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.1); }
-  }
-
-  /* IP地址顶部展示区域 */
-  .ip-header {
-    text-align: center;
-    padding: 2rem 0;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .ip-address-large {
-    font-size: 3rem;
-    font-weight: 700;
-    font-family: 'Courier New', monospace;
-    color: #ffffff;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.5rem;
-  }
-
-  .location-with-flag {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 0.5rem;
-    font-size: 1.1rem;
-    color: #cccccc;
-  }
-
-  .flag-icon {
-    width: 24px;
-    height: 18px;
-    border-radius: 2px;
-    margin-right: 0.5rem;
-  }
 
   /* 三栏布局 */
-  /* 三栏布局 - 现代化设计 */
   .three-column-layout {
-    display: grid;
+    @apply grid gap-8 px-8 pb-8 max-w-7xl mx-auto relative;
     grid-template-columns: 1fr minmax(320px, 360px) 1fr;
-    gap: 2rem;
-    padding: 0 2rem 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    position: relative;
   }
 
   .three-column-layout::before {
@@ -303,8 +194,8 @@
   .left-column,
   .center-column,
   .right-column {
+    @apply opacity-0;
     animation: fadeInUp 0.8s ease-out forwards;
-    opacity: 0;
   }
 
   .left-column {
@@ -312,9 +203,7 @@
   }
 
   .center-column {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @apply flex items-center justify-center;
     animation-delay: 0.2s;
   }
 
@@ -322,369 +211,147 @@
     animation-delay: 0.3s;
   }
 
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* 专业卡片样式 */
-  .professional-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.06));
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1.25rem;
-    padding: 1.75rem;
-    backdrop-filter: blur(20px) saturate(180%);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .professional-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.05), transparent 40%);
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-  }
-
-  .professional-card:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.08));
-    border-color: rgba(255, 255, 255, 0.15);
-    transform: translateY(-3px);
-    box-shadow: 
-      0 20px 40px rgba(0, 0, 0, 0.2),
-      0 0 60px rgba(99, 102, 241, 0.05),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  }
-  
-  .professional-card:hover::before {
-    opacity: 1;
-  }
-
+  /* 专业卡片头部 */
   .professional-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
+    @apply flex justify-between items-center mb-6;
   }
 
   .professional-card-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    @apply text-xl font-semibold text-white flex items-center gap-2;
   }
 
-  /* 专业标签样式 */
+  /* 专业标签 */
   .advanced-label {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full;
+    @apply text-xs font-bold uppercase tracking-wider;
+    @apply text-black;
     background: linear-gradient(135deg, #00ff88, #00cc6a);
-    color: #000000;
-    padding: 0.25rem 0.75rem;
-    border-radius: 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
   }
 
   .pro-label {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full;
+    @apply text-xs font-bold uppercase tracking-wider;
+    @apply text-white;
     background: linear-gradient(135deg, #ff0066, #cc0052);
-    color: #ffffff;
-    padding: 0.25rem 0.75rem;
-    border-radius: 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
   }
 
   .details-label {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full;
+    @apply text-xs font-bold uppercase tracking-wider;
+    @apply text-white;
     background: linear-gradient(135deg, #ff0066, #cc0052);
-    color: #ffffff;
-    padding: 0.25rem 0.75rem;
-    border-radius: 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
   }
 
-  /* 欺诈评分圆形显示 */
-  .fraud-score-circle {
-    width: 200px;
-    height: 200px;
-    position: relative;
-    margin: 0 auto;
-  }
-
-  .fraud-score-svg {
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-  }
-
-  .fraud-score-track {
-    stroke: #2a2a2a;
-    stroke-width: 12;
-    fill: none;
-  }
-
-  .fraud-score-progress {
-    stroke-width: 12;
-    fill: none;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 1s ease-in-out;
-  }
-
-  .fraud-score-progress.low-risk {
-    stroke: #00ff88;
-  }
-
-  .fraud-score-progress.medium-risk {
-    stroke: #ffaa00;
-  }
-
-  .fraud-score-progress.high-risk {
-    stroke: #ff0066;
-  }
-
-  .fraud-score-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-  }
-
-  .fraud-score-number {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #ffffff;
-    line-height: 1;
-  }
-
-  .fraud-score-label {
-    font-size: 0.9rem;
-    color: #cccccc;
-    margin-top: 0.25rem;
-  }
-
-  /* 摘要卡片样式 */
-  .summary-card {
-    background: rgba(26, 26, 26, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    backdrop-filter: blur(10px);
-    width: 100%;
-    margin: 2rem 0;
-  }
-
-  .risk-warning {
-    background: linear-gradient(135deg, rgba(255, 0, 102, 0.1), rgba(204, 0, 82, 0.1));
-    border: 1px solid rgba(255, 0, 102, 0.3);
-    border-radius: 0.75rem;
-    padding: 1rem;
-    margin: 1rem 0;
-  }
-
-  .risk-warning-title {
-    color: #ff0066;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .risk-warning-content {
-    color: #cccccc;
-    font-size: 0.9rem;
-    line-height: 1.5;
+  /* 摘要区域 */
+  .summary-section {
+    @apply px-8 pb-8 max-w-7xl mx-auto;
   }
 
   /* 详细信息网格 */
   .details-grid {
-    display: grid;
+    @apply grid gap-4 px-8 pb-8 max-w-7xl mx-auto;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1rem;
-    padding: 0 2rem 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
   }
 
+  /* 信息项 */
   .info-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    @apply flex justify-between items-center py-3 border-b border-white/5;
   }
 
   .info-item:last-child {
-    border-bottom: none;
+    @apply border-b-0;
   }
 
   .info-label {
-    color: #888888;
-    font-size: 0.9rem;
-    font-weight: 500;
+    @apply text-gray-400 text-sm font-medium;
   }
 
   .info-value {
-    color: #ffffff;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-align: right;
-    max-width: 60%;
-    word-break: break-word;
+    @apply text-white text-sm font-semibold text-right max-w-[60%] break-words;
   }
 
   .info-value.font-mono {
-    font-family: 'Courier New', monospace;
-    font-size: 0.8rem;
-  }
-
-  /* 主要卡片样式 */
-  .network-card {
-    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl p-6 transition-all duration-300 hover:bg-card/90 hover:border-border/70 hover:shadow-lg;
-  }
-
-  .metric-card {
-    @apply bg-gradient-to-br from-card/40 to-muted/20 backdrop-blur-sm border border-border/30 rounded-lg p-4 transition-all duration-300 hover:from-card/60 hover:to-muted/40;
-  }
-
-  /* 状态指示器 */
-  .status-indicator {
-    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium;
-  }
-
-  .status-safe {
-    @apply bg-green-500/20 text-green-400 border border-green-500/30;
-  }
-
-  .status-warning {
-    @apply bg-yellow-500/20 text-yellow-400 border border-yellow-500/30;
-  }
-
-  .status-danger {
-    @apply bg-red-500/20 text-red-400 border border-red-500/30;
-  }
-
-  .status-info {
-    @apply bg-blue-500/20 text-blue-400 border border-blue-500/30;
-  }
-
-  /* 数据显示 */
-  .data-label {
-    @apply text-sm font-medium text-muted-foreground mb-1;
-  }
-
-  .data-value {
-    @apply text-lg font-semibold text-foreground;
-  }
-
-  .data-value-large {
-    @apply text-2xl font-bold text-foreground;
-  }
-
-  .section-header {
-    @apply text-xl font-bold text-foreground mb-6 flex items-center gap-3;
-  }
-
-  /* 进度环 */
-  .progress-ring {
-    transform: rotate(-90deg);
-    transform-origin: 50% 50%;
-  }
-
-  /* 毛玻璃效果 */
-  .glass-effect {
-    backdrop-filter: blur(10px);
-    background: rgba(var(--card), 0.7);
-    border: 1px solid rgba(var(--border), 0.3);
-  }
-
-  /* IP 地址显示 */
-  .ip-display {
-    @apply text-3xl font-mono font-bold text-foreground tracking-wider;
-  }
-
-  /* 位置信息 */
-  .location-info {
-    @apply text-lg text-muted-foreground flex items-center gap-2;
-  }
-
-  /* 网络指标网格 */
-  .metrics-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
-  }
-
-  /* 详细信息表格 */
-  .info-table {
-    @apply w-full border-collapse;
-  }
-
-  .info-table th {
-    @apply text-left text-sm font-medium text-muted-foreground p-3 border-b border-border/50;
-  }
-
-  .info-table td {
-    @apply text-sm text-foreground p-3 border-b border-border/30;
-  }
-
-  /* 动画效果 */
-  .pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite;
-  }
-
-  .fade-in {
-    animation: fade-in 0.5s ease-out;
-  }
-
-  .slide-up {
-    animation: slide-up 0.6s ease-out;
+    @apply text-xs;
+    font-family: var(--font-geist-mono);
   }
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+@layer utilities {
+  /* 文本渐变 */
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent;
   }
-  50% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+
+  /* 边框渐变 */
+  .border-gradient {
+    border-image: linear-gradient(to right, rgb(59, 130, 246), rgb(147, 51, 234)) 1;
+  }
+
+  /* 阴影效果 */
+  .shadow-glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+
+  .shadow-glow-purple {
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+  }
+
+  .shadow-3xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 50px rgba(59, 130, 246, 0.1);
+  }
+
+  /* 滚动条样式 */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59, 130, 246, 0.5) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.5);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.7);
   }
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
+/* 动画关键帧 */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(20px); 
+    opacity: 0; 
   }
-  to {
-    opacity: 1;
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
   }
 }
 
-@keyframes slide-up {
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -695,77 +362,43 @@
   }
 }
 
+@keyframes backgroundShift {
+  0%, 100% { 
+    transform: rotate(0deg) scale(1); 
+  }
+  50% { 
+    transform: rotate(180deg) scale(1.1); 
+  }
+}
+
 /* 响应式设计 */
 @media (max-width: 1024px) {
   .three-column-layout {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .fraud-score-circle {
-    width: 160px;
-    height: 160px;
-  }
-  
-  .fraud-score-number {
-    font-size: 2rem;
+    @apply grid-cols-1 gap-6;
   }
 }
 
 @media (max-width: 768px) {
-  .ip-address-large {
-    font-size: 2.5rem;
-  }
-  
   .three-column-layout {
-    padding: 1rem;
+    @apply px-4;
   }
   
   .professional-card {
-    padding: 1rem;
+    @apply p-4;
   }
   
   .details-grid {
-    grid-template-columns: 1fr;
-    padding: 0 1rem 1rem;
+    @apply grid-cols-1 px-4;
   }
   
-  .fraud-score-circle {
-    width: 140px;
-    height: 140px;
-  }
-  
-  .fraud-score-number {
-    font-size: 1.8rem;
+  .summary-section {
+    @apply px-4;
   }
 }
 
-@media (max-width: 480px) {
-  .ip-address-large {
-    font-size: 2rem;
-  }
-  
-  .location-with-flag {
-    font-size: 1rem;
-  }
-  
-  .fraud-score-circle {
-    width: 120px;
-    height: 120px;
-  }
-  
-  .fraud-score-number {
-    font-size: 1.5rem;
-  }
-  
-  .professional-card-title {
-    font-size: 1.1rem;
-  }
-  
-  .advanced-label,
-  .pro-label,
-  .details-label {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.6rem;
+/* 打印样式 */
+@media print {
+  .no-print {
+    display: none !important;
   }
 }
