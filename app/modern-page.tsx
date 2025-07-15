@@ -14,7 +14,8 @@ import { FingerprintDataDisplay } from "@/components/fingerprint-data-display";
 import { FingerprintDetails } from "@/components/fingerprint-details";
 import { 
   getNestedValue, 
-  calculateRiskScore
+  calculateRiskScore,
+  safeRender
 } from "@/lib/field-utils";
 import {
   MapPin,
@@ -38,7 +39,8 @@ export default function ModernNetworkDetection() {
 
   // 数据转换函数
   const transformToBrowserInfo = useCallback(() => {
-    if (!deviceInfo || !enhancedFingerprint.data.clientData?.result) return null;
+    // 确保所有数据都已加载
+    if (!deviceInfo || !enhancedFingerprint.data.clientData?.result || enhancedFingerprint.data.isLoading) return null;
     
     return {
       name: deviceInfo.browser || '未知',
@@ -64,10 +66,11 @@ export default function ModernNetworkDetection() {
         audio: browserFingerprint?.audioFingerprint,
       }
     };
-  }, [deviceInfo, enhancedFingerprint.data.clientData, browserFingerprint]);
+  }, [deviceInfo, enhancedFingerprint.data.clientData, browserFingerprint, enhancedFingerprint.data.isLoading]);
 
   const transformToConnectionInfo = useCallback(() => {
-    if (!enhancedFingerprint.data.clientData?.result || !webrtcInfo) return null;
+    // 确保所有数据都已加载
+    if (!enhancedFingerprint.data.clientData?.result || !webrtcInfo || enhancedFingerprint.data.isLoading) return null;
     
     const result = enhancedFingerprint.data.clientData.result;
     
@@ -133,7 +136,7 @@ export default function ModernNetworkDetection() {
       qualityScore: networkQuality.score || 0,
       quality: networkQuality, // 添加 quality 对象
     };
-  }, [enhancedFingerprint.data, webrtcInfo]);
+  }, [enhancedFingerprint.data, webrtcInfo, enhancedFingerprint.data.isLoading]);
 
   const transformToSummaryData = useCallback(() => {
     if (!enhancedFingerprint.data.clientData?.result) return null;
@@ -224,20 +227,6 @@ export default function ModernNetworkDetection() {
       suspiciousActivities,
     };
   }, [enhancedFingerprint.data]);
-
-  // 使用字段映射系统的安全渲染函数
-  const safeRender = (value: unknown, fallback: string = '未知'): string => {
-    if (value === null || value === undefined) return fallback;
-    if (typeof value === 'object') {
-      try {
-        if (Array.isArray(value)) return value.join(', ');
-        return JSON.stringify(value);
-      } catch {
-        return fallback;
-      }
-    }
-    return String(value);
-  };
 
 
   // 刷新所有数据
@@ -342,7 +331,7 @@ export default function ModernNetworkDetection() {
                   <div className="group">
                     <div className="flex items-center gap-4">
                       <span className="text-6xl font-light bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                        {safeRender(enhancedFingerprint.data.clientData.result.ip, "未知")}
+                        {enhancedFingerprint.data.clientData.result.ip || "未知"}
                       </span>
                       {enhancedFingerprint.data.clientData.result.ip && (
                         <button
@@ -369,11 +358,11 @@ export default function ModernNetworkDetection() {
               <div className="flex items-center justify-center gap-2 text-lg">
                 <MapPin className="h-5 w-5 text-blue-400" />
                 <span className="text-gray-300">
-                  {safeRender(enhancedFingerprint.data.clientData.result.ipLocation.country?.name)}
+                  {enhancedFingerprint.data.clientData.result.ipLocation.country?.name || "未知"}
                   {enhancedFingerprint.data.clientData.result.ipLocation.subdivisions?.[0]?.name &&
-                   ` • ${safeRender(enhancedFingerprint.data.clientData.result.ipLocation.subdivisions?.[0]?.name)}`}
+                   ` • ${enhancedFingerprint.data.clientData.result.ipLocation.subdivisions?.[0]?.name}`}
                   {enhancedFingerprint.data.clientData.result.ipLocation.city?.name &&
-                   ` • ${safeRender(enhancedFingerprint.data.clientData.result.ipLocation.city?.name)}`}
+                   ` • ${enhancedFingerprint.data.clientData.result.ipLocation.city?.name}`}
                 </span>
               </div>
             )}
@@ -407,7 +396,7 @@ export default function ModernNetworkDetection() {
                   <span className="text-lg text-red-400 font-medium">连接失败</span>
                 </div>
                 <p className="text-gray-300 mb-4">
-                  {safeRender(enhancedFingerprint.data.clientData.error?.message, "无法连接到指纹识别服务，请检查网络连接后重试。")}
+                  {enhancedFingerprint.data.clientData.error?.message || "无法连接到指纹识别服务，请检查网络连接后重试。"}
                 </p>
                 <button
                   onClick={enhancedFingerprint.refresh}
@@ -555,7 +544,7 @@ export default function ModernNetworkDetection() {
               <div className="text-center py-8">
                 <AlertTriangle className="h-8 w-8 text-red-400 mx-auto mb-2" />
                 <p className="text-red-400 mb-2">Fingerprint Pro 数据获取失败</p>
-                <p className="text-sm text-gray-500">{safeRender(enhancedFingerprint.data.clientData.error?.message, "未知错误")}</p>
+                <p className="text-sm text-gray-500">{enhancedFingerprint.data.clientData.error?.message || "未知错误"}</p>
                 <button
                   onClick={enhancedFingerprint.refresh}
                   className="mt-3 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors"
@@ -565,6 +554,25 @@ export default function ModernNetworkDetection() {
               </div>
             ) : enhancedFingerprint.data.clientData?.result ? (
               <div className="bg-gray-800/50 rounded-lg p-4">
+                {/* 调试信息 */}
+                {process.env.NODE_ENV === 'development' && (
+                  <details className="mb-4 bg-yellow-900/20 p-3 rounded">
+                    <summary className="text-xs text-yellow-400 cursor-pointer">调试: 数据结构</summary>
+                    <pre className="text-xs mt-2 overflow-auto max-h-40 text-gray-300">
+                      {JSON.stringify({
+                        dataKeys: Object.keys(enhancedFingerprint.data.clientData.result),
+                        sampleData: {
+                          ip: enhancedFingerprint.data.clientData.result.ip,
+                          visitorId: enhancedFingerprint.data.clientData.result.visitorId,
+                          confidence: enhancedFingerprint.data.clientData.result.confidence,
+                          incognito: enhancedFingerprint.data.clientData.result.incognito,
+                          browserName: enhancedFingerprint.data.clientData.result.browserName,
+                          vpn: enhancedFingerprint.data.clientData.result.vpn,
+                        }
+                      }, null, 2)}
+                    </pre>
+                  </details>
+                )}
                 <FingerprintDataDisplay data={enhancedFingerprint.data} />
               </div>
             ) : (

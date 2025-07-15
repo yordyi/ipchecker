@@ -76,6 +76,17 @@ export function useFingerprintPro() {
 
     if (data) {
       console.log('✅ Fingerprint Pro 数据加载成功:', data);
+      console.log('📊 数据结构详情:', {
+        visitorId: data.visitorId,
+        requestId: data.requestId,
+        confidence: data.confidence,
+        hasIpLocation: !!data.ipLocation,
+        hasIncognito: !!data.incognito,
+        hasBrowserName: !!data.browserName,
+        hasDevice: !!data.device,
+        ipLocationKeys: data.ipLocation ? Object.keys(data.ipLocation) : [],
+        allKeys: Object.keys(data)
+      });
       setTimeoutError(null);
       setFingerprintProData({
         isLoading: false,

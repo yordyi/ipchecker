@@ -73,7 +73,7 @@ export function useEnhancedFingerprint() {
 
   // 当客户端数据可用时，自动获取服务端数据
   useEffect(() => {
-    if (clientFingerprint.data.result && !clientFingerprint.data.isLoading) {
+    if (clientFingerprint.data && clientFingerprint.data.result && !clientFingerprint.data.isLoading) {
       const visitorId = clientFingerprint.data.result.visitorId;
       const requestId = clientFingerprint.data.result.requestId;
       
@@ -81,7 +81,7 @@ export function useEnhancedFingerprint() {
         fetchServerData(visitorId, requestId);
       }
     }
-  }, [clientFingerprint.data.result, clientFingerprint.data.isLoading, fetchServerData]);
+  }, [clientFingerprint.data?.result, clientFingerprint.data?.isLoading, fetchServerData]);
 
   // 刷新所有数据
   const refreshAll = useCallback(async () => {
@@ -89,7 +89,7 @@ export function useEnhancedFingerprint() {
     await clientFingerprint.refresh();
     
     // 如果有访问者 ID，也刷新服务端数据
-    if (clientFingerprint.data.result?.visitorId) {
+    if (clientFingerprint.data?.result?.visitorId) {
       await fetchServerData(
         clientFingerprint.data.result.visitorId,
         clientFingerprint.data.result.requestId
@@ -99,18 +99,18 @@ export function useEnhancedFingerprint() {
 
   // 仅刷新服务端数据
   const refreshServerData = useCallback(async () => {
-    if (clientFingerprint.data.result?.visitorId) {
+    if (clientFingerprint.data?.result?.visitorId) {
       await fetchServerData(
         clientFingerprint.data.result.visitorId,
         clientFingerprint.data.result.requestId
       );
     }
-  }, [clientFingerprint.data.result, fetchServerData]);
+  }, [clientFingerprint.data?.result, fetchServerData]);
 
   const enhancedData: EnhancedFingerprintProData = {
     clientData: clientFingerprint.data,
     serverData,
-    isLoading: clientFingerprint.data.isLoading || serverData.isLoading,
+    isLoading: clientFingerprint.data?.isLoading || serverData.isLoading,
     hasServerData,
   };
 
@@ -120,9 +120,9 @@ export function useEnhancedFingerprint() {
     refresh: refreshAll,
     refreshServerData,
     // 便捷访问器
-    visitorId: clientFingerprint.data.result?.visitorId,
-    requestId: clientFingerprint.data.result?.requestId,
-    confidence: clientFingerprint.data.result?.confidence?.score,
+    visitorId: clientFingerprint.data?.result?.visitorId,
+    requestId: clientFingerprint.data?.result?.requestId,
+    confidence: clientFingerprint.data?.result?.confidence?.score,
     // 服务端增强数据访问器
     visitorHistory: serverData.visitorHistory,
     currentVisit: serverData.currentVisit,
